@@ -13,7 +13,16 @@ def normalize_zlib_static(prefix: Path) -> None:
     FindZLIB modules do not search these names, so retain the original export
     location and add a byte-identical static-library compatibility name.
     """
-    for original, compatible in [('zs.lib', 'zlibstatic.lib'), ('zs.lib', 'z.lib'), ('libzs.a', 'libz.a')]:
+    # zlib sets CMAKE_DEBUG_POSTFIX "d" unconditionally on Windows, so a Debug
+    # build installs zsd.lib/libzsd.a. Each artifact prefix holds one
+    # configuration, so either spelling supplies the same compatibility names.
+    pairs = []
+    for stem in ('zs', 'zsd'):
+        pairs += [(stem + '.lib', 'zlibstatic.lib'), (stem + '.lib', 'z.lib'), ('lib' + stem + '.a', 'libz.a')]
+    present = {name for name, _ in pairs if (prefix / 'lib' / name).is_file()}
+    if {'zs.lib', 'zsd.lib'} <= present or {'libzs.a', 'libzsd.a'} <= present:
+        raise ValueError(f'Release and Debug zlib archives share one prefix: {prefix}')
+    for original, compatible in pairs:
         source, target = prefix / 'lib' / original, prefix / 'lib' / compatible
         if source.is_file():
             if target.exists() or target.is_symlink():

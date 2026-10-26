@@ -133,6 +133,28 @@ class RecipeTests(unittest.TestCase):
                 self.assertEqual((prefix / "lib" / compatible).read_bytes(), b"local modification")
 
 
+    def test_zlib_debug_archive_names_supply_the_same_compatibility_names(self):
+        # zlib forces CMAKE_DEBUG_POSTFIX "d" on Windows: zsd.lib / libzsd.a.
+        for original, compatible in (("zsd.lib", "z.lib"), ("zsd.lib", "zlibstatic.lib"),
+                                     ("libzsd.a", "libz.a")):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as temporary:
+                prefix = Path(temporary)
+                (prefix / "lib").mkdir()
+                (prefix / "lib" / original).write_bytes(b"debug static library")
+                hooks.normalize_zlib_static(prefix)
+                self.assertEqual((prefix / "lib" / compatible).read_bytes(), b"debug static library")
+
+    def test_zlib_release_and_debug_archives_never_share_a_prefix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary)
+            (prefix / "lib").mkdir()
+            (prefix / "lib/libzs.a").write_bytes(b"release")
+            (prefix / "lib/libzsd.a").write_bytes(b"debug")
+            with self.assertRaisesRegex(ValueError, "share one prefix"):
+                hooks.normalize_zlib_static(prefix)
+            self.assertFalse((prefix / "lib/libz.a").exists())
+
+
 class ProviderContext:
     def __init__(self, text, data=b"release bytes"):
         self.text, self.data = text, data
