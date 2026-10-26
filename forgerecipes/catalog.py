@@ -194,7 +194,7 @@ RECIPES: tuple[Dependency, ...] = (
         license="MIT", license_files=("LICENSE",), root="",
         kind="cmake", header_only=True,
         options=("-DBUILD_TESTING=OFF",),
-        artifacts=("include/SQLiteCpp.h", "include/SQLiteCpp/type_wrapper.h"),
+        artifacts=("include/SQLiteCpp.h", "include/SQLiteCpp/database.h"),
     ),
     Dependency(
         name="doctest", version="",
