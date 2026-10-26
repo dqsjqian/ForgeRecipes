@@ -11,7 +11,7 @@ _PATCHES = {
 }
 _PROTOCOL = {"nghttp2", "nghttp3", "ngtcp2"}
 _CATALOG = {"zlib", "openssl", "curl", "json", "sqlite3", "gumbo", "quickjs",
-            "doctest", "aria", "mira"}
+            "sqlite_modern_cpp", "doctest", "aria", "mira"}
 
 
 def recipe_input_files(name):

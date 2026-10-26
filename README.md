@@ -6,12 +6,12 @@ artifact storage, locking and environment receipts. No third-party source
 archives or installed libraries are bundled.
 
 The catalog contains zlib, OpenSSL, curl, JSON, SQLite, Gumbo, QuickJS,
-doctest, Aria, Mira, nghttp2, nghttp3 and ngtcp2. Applications keep their
-version locks and feature-selection policy in their own repositories.
+sqlite_modern_cpp, doctest, Aria, Mira, nghttp2, nghttp3 and ngtcp2. Applications
+keep their version locks and feature-selection policy in their own repositories.
 
-SQLiteCpp is infrastructure with its own repository and release process; it is
-deliberately absent here. Consume it with `find_package(SQLiteCpp)` against an
-installed or vendored copy instead of building it as a dependency.
+`sqlite_modern_cpp` keeps its historical dependency name but is sourced from the
+maintained SQLiteCpp project and built with its own CMake project and
+`BUILD_TESTING` off, so no patch or generated build file is needed.
 
 ```python
 from forgerecipes import get_recipe, recipe_input_files, make_sdk_config
