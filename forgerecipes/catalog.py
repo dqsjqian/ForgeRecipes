@@ -186,17 +186,6 @@ RECIPES: tuple[Dependency, ...] = (
         artifacts=("lib/libquickjs.a", "include/quickjs.h"),
     ),
     Dependency(
-        # The logical name stays for existing locks; the code now comes from
-        # the maintained SQLiteCpp repository, which owns the C++23 wrapper.
-        name="sqlite_modern_cpp", version="",
-        url="",
-        sha256="",
-        license="MIT", license_files=("License.txt", "NOTICE.md"), root="",
-        kind="cmake", header_only=True,
-        options=("-DBUILD_TESTING=OFF",),
-        artifacts=("include/SQLiteCpp.h", "include/SQLiteCpp/type_wrapper.h"),
-    ),
-    Dependency(
         name="doctest", version="",
         url="",
         sha256="",
