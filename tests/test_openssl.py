@@ -86,7 +86,7 @@ class OpenSSLTests(unittest.TestCase):
     def test_canonical_prefix_is_used_without_copying_relocatable_exports(self):
         context = self.context()
         openssl.build_openssl(context)
-        self.assertIn("-DARIA_OPENSSL_INSTALL_PREFIX=" + str(context.prefix), context.run.call_args_list[0].args[0])
+        self.assertIn("-DARIA_OPENSSL_INSTALL_PREFIX=" + Path(context.prefix).as_posix(), context.run.call_args_list[0].args[0])
         driver = (context.build_dir / "recipe-driver/CMakeLists.txt").read_text()
         self.assertIn("ARIA_PINNED_OPENSSL_SOURCE_DIR", driver)
         self.assertIn(context.source_snapshot.as_posix(), driver)
