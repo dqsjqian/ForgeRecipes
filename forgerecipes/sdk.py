@@ -40,7 +40,7 @@ def make_mira_recipe(*, tls=False, websocket=False, http2=False, http3=False, dn
         "MIRA_ENABLE_HTTP2": http2, "MIRA_ENABLE_HTTP3": http3, "MIRA_ENABLE_DNSSEC": dnssec}, required)
 
 
-def make_sdk_config(*, aria_options=(), **features):
+def make_sdk_config(*, aria_options=(), extra_packages=(), **features):
     """Return the complete shared Aria SDK graph for make_aria_recipe features."""
     from pathlib import Path
     from forgedeps import ProjectConfig
@@ -64,6 +64,8 @@ def make_sdk_config(*, aria_options=(), **features):
         seen.add(name)
         result.append(dependency)
     visit("aria")
+    for name in extra_packages:
+        visit(name)
     return ProjectConfig(name="aria-sdk", recipes=tuple(result),
         builders={"openssl": build_openssl, "curl": build_curl, "ngtcp2": build_ngtcp2},
         resolve_recipe=resolve_recipe, patches_dir=Path(__file__).with_name("patches"),

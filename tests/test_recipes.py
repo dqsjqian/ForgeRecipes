@@ -31,6 +31,11 @@ class RecipeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'TLS requires'):
             make_sdk_config(tls=True)
 
+    def test_sdk_can_select_an_explicit_additional_library(self):
+        deps = make_sdk_config(extra_packages=('json',), shared=False).recipes
+        self.assertEqual([dep.name for dep in deps], ['aria', 'json'])
+        self.assertEqual(deps[0].requires, ())
+
     def test_external_sdk_options_only_change_aria_recipe(self):
         plain = {d.name: d for d in make_sdk_config(http=True, tls=True, qt=True).recipes}
         qt = {d.name: d for d in make_sdk_config(http=True, tls=True, qt=True,
