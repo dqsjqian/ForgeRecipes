@@ -20,7 +20,7 @@ class BindingTests(unittest.TestCase):
         with patch.object(bindings, 'build_cmake') as build:
             bindings.build_ngtcp2(ctx)
         self.assertEqual(build.call_args.args[0].options['cmake_options'],
-                         ['-DKEEP=1', '-DOPENSSL_ROOT_DIR=/shared/ssl'])
+                         ['-DKEEP=1', '-DOPENSSL_ROOT_DIR=' + str(Path('/shared/ssl'))])
         with self.assertRaisesRegex(ValueError, 'requires an artifact'):
             bindings.build_ngtcp2(Context({}, {}, {}))
 
