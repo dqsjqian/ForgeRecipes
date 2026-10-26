@@ -61,22 +61,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/SQLite3AmalgamationConfig.cmake
         DESTINATION lib/cmake/SQLite3Amalgamation)
 """
 
-SQLITE_MODERN_CPP_CMAKE = """\
-cmake_minimum_required(VERSION 3.16)
-project(sqlite_modern_cpp CXX)
-add_library(sqlite_modern_cpp INTERFACE)
-target_include_directories(sqlite_modern_cpp INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hdr>
-    $<INSTALL_INTERFACE:include>)
-install(TARGETS sqlite_modern_cpp EXPORT SqliteModernCppTargets)
-install(DIRECTORY hdr/ DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(EXPORT SqliteModernCppTargets FILE SqliteModernCppTargets.cmake
-        NAMESPACE sqlite_modern_cpp:: DESTINATION lib/cmake/sqlite_modern_cpp)
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/sqlite_modern_cpp-config.cmake
-     "include(\\"\\${CMAKE_CURRENT_LIST_DIR}/SqliteModernCppTargets.cmake\\")\\n")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/sqlite_modern_cpp-config.cmake
-        DESTINATION lib/cmake/sqlite_modern_cpp)
-"""
 
 QUICKJS_CMAKE = """\
 cmake_minimum_required(VERSION 3.16)
@@ -202,13 +186,15 @@ RECIPES: tuple[Dependency, ...] = (
         artifacts=("lib/libquickjs.a", "include/quickjs.h"),
     ),
     Dependency(
+        # The logical name stays for existing locks; the code now comes from
+        # the maintained SQLiteCpp repository, which owns the C++23 wrapper.
         name="sqlite_modern_cpp", version="",
         url="",
         sha256="",
-        license="MIT", license_files=("License.txt",), root="",
-        kind="generated", cmake_lists=SQLITE_MODERN_CPP_CMAKE,
-        patch="sqlite_modern_cpp-v3.2-ariaread.patch",
-        artifacts=("include/sqlite_modern_cpp.h",),
+        license="MIT", license_files=("License.txt", "NOTICE.md"), root="",
+        kind="cmake", header_only=True,
+        options=("-DBUILD_TESTING=OFF",),
+        artifacts=("include/SQLiteCpp.h", "include/SQLiteCpp/type_wrapper.h"),
     ),
     Dependency(
         name="doctest", version="",

@@ -7,7 +7,6 @@ _ROOT = Path(__file__).resolve().parent
 _PATCHES = {
     "gumbo": ("gumbo-0.10.1-msvc.patch",),
     "quickjs": ("quickjs-msvc-2026-06-04.patch", "quickjs_msvc_shim.h"),
-    "sqlite_modern_cpp": ("sqlite_modern_cpp-v3.2-ariaread.patch",),
     "doctest": ("doctest-2.5.3-cmake-utf8-discovery.patch",),
 }
 _PROTOCOL = {"nghttp2", "nghttp3", "ngtcp2"}

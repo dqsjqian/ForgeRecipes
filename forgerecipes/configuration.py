@@ -7,7 +7,7 @@ from .openssl import build_openssl
 from .resolve import resolve_recipe
 
 PATCH_VERSIONS = {'gumbo': {'0.10.1'}, 'quickjs': {'2026-06-04'},
-                  'sqlite_modern_cpp': {'3.2'}, 'doctest': {'2.5.3'}}
+                  'doctest': {'2.5.3'}}
 PROVIDERS = {'sqlite': providers.resolve_sqlite, 'quickjs': providers.resolve_quickjs}
 
 def make_config(names):

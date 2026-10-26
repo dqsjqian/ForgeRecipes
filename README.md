@@ -9,6 +9,10 @@ The catalog contains zlib, OpenSSL, curl, JSON, SQLite, Gumbo, QuickJS,
 sqlite_modern_cpp, doctest, Aria, Mira, nghttp2, nghttp3 and ngtcp2. Applications
 keep their version locks and feature-selection policy in their own repositories.
 
+`sqlite_modern_cpp` keeps its historical dependency name but is built from the
+maintained SQLiteCpp sources with their own CMake project and `BUILD_TESTING`
+off, so no patch or generated build file is needed.
+
 ```python
 from forgerecipes import get_recipe, recipe_input_files, make_sdk_config
 from forgerecipes.configuration import make_config
