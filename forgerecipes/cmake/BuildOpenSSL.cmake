@@ -267,7 +267,9 @@ ExternalProject_Add(aria_openssl_external
     BUILD_COMMAND "${CMAKE_COMMAND}" "-DCONFIG=${_OPENSSL_CONFIG}" -DSTEP=build -P "${_OPENSSL_ROOT}/run.cmake"
     INSTALL_COMMAND "${CMAKE_COMMAND}" "-DCONFIG=${_OPENSSL_CONFIG}" -DSTEP=install -P "${_OPENSSL_ROOT}/run.cmake"
     BUILD_BYPRODUCTS "${OPENSSL_INSTALL_DIR}/lib/${_OPENSSL_SSL_NAME}" "${OPENSSL_INSTALL_DIR}/lib/${_OPENSSL_CRYPTO_NAME}"
-    LOG_CONFIGURE TRUE LOG_BUILD TRUE LOG_INSTALL TRUE)
+    # Keep the step logs, but print them when a step fails: OpenSSL's own
+    # Configure/make diagnostics are otherwise only in files on the builder.
+    LOG_CONFIGURE TRUE LOG_BUILD TRUE LOG_INSTALL TRUE LOG_OUTPUT_ON_FAILURE TRUE)
 ExternalProject_Add_StepDependencies(aria_openssl_external configure
     "${_OPENSSL_ROOT}/run.cmake")
 if(_OPENSSL_BASH)
