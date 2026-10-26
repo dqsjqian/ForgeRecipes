@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forgerecipes"
+version = "0.1.0"
+description = "Reusable external library build recipes for ForgeDeps"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+dependencies = ["forgedeps>=0.4.0,<0.5"]
+
+[tool.setuptools]
+license-files = ["LICENSE", "NOTICE.md"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["forgerecipes*"]
+
+[tool.setuptools.package-data]
+forgerecipes = ["patches/*.patch", "patches/*.h", "licenses/*", "cmake/*"]
