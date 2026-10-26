@@ -59,6 +59,13 @@ if(NOT COMMAND aria_fetch_pinned_archive)
 endif()
 aria_fetch_pinned_archive(NAME openssl)
 set(OPENSSL_SOURCE_DIR "${ARIA_PINNED_OPENSSL_SOURCE_DIR}")
+# Paths from callers may be native Windows paths. They are substituted into the
+# generated run.cmake/run-mingw.sh, where a backslash starts an escape sequence,
+# so normalise every externally supplied path to CMake form first.
+file(TO_CMAKE_PATH "${OPENSSL_SOURCE_DIR}" OPENSSL_SOURCE_DIR)
+if(ARIA_OPENSSL_INSTALL_PREFIX)
+    file(TO_CMAKE_PATH "${ARIA_OPENSSL_INSTALL_PREFIX}" ARIA_OPENSSL_INSTALL_PREFIX)
+endif()
 if(NOT EXISTS "${OPENSSL_SOURCE_DIR}/Configure")
     message(FATAL_ERROR
         "ARIA_HTTP_ENABLE_TLS=ON but the pinned OpenSSL archive has no Configure script. "

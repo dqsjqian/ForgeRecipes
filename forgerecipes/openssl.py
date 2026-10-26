@@ -66,7 +66,7 @@ def build_openssl(ctx):
     if settings.get("CMAKE_TOOLCHAIN_FILE"):
         command += ["-DCMAKE_TOOLCHAIN_FILE=" + settings["CMAKE_TOOLCHAIN_FILE"]]
     command += ["-DCMAKE_BUILD_TYPE=" + ctx.configuration,
-                "-DARIA_OPENSSL_INSTALL_PREFIX=" + str(ctx.prefix),
+                "-DARIA_OPENSSL_INSTALL_PREFIX=" + Path(ctx.prefix).as_posix(),
                 "-DARIA_OPENSSL_JOBS=" + str(ctx.jobs),
                 "-DARIA_OPENSSL_CONFIGURE_OPTIONS=" + ";".join(CONFIGURE_OPTIONS)]
     ctx.run(command)
