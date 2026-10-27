@@ -1,6 +1,10 @@
 name: recipes
 on: [push, pull_request, workflow_dispatch]
 env:
+  # The CI scripts print UTF-8 diagnostics; a Windows console defaults
+  # to cp1252 and raises UnicodeEncodeError on them.
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: utf-8
   # Project policy: only the latest stable CPython is supported and tested.
   PYTHON_VERSION: '3.14'
 jobs:
