@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "forgerecipes"
-version = "0.1.7"
+version = "0.1.8"
 description = "Reusable external library build recipes for ForgeDeps"
 requires-python = ">=3.14"
 license = {file = "LICENSE"}

@@ -30,3 +30,4 @@ jobs:
           for name in ('quickjs', 'ngtcp2', 'openssl'):
               assert all(path.is_file() for path in recipe_input_files(name).values())
           assert (cmake_dir() / 'RunOpenSSL-mingw.sh.in').is_file()
+          assert (cmake_dir() / 'PackageLocation.cmake').is_file()

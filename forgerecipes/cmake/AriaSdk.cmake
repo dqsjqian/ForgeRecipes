@@ -1,5 +1,6 @@
 # The application selects SDK features; the external recipe owns their builds.
 include_guard(GLOBAL)
+include("${CMAKE_CURRENT_LIST_DIR}/PackageLocation.cmake")
 
 function(forgerecipes_sdk)
     cmake_parse_arguments(SDK "OFFLINE" "FILE;SOURCE;CONFIGURATION;PREFIXES;QT;HTTP;TLS;JNI;APPKIT;UIKIT;SHARED"
