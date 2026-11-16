@@ -13,16 +13,24 @@ def _variant(name, settings, requires):
     return with_inputs(replace(dep, options=options, requires=tuple(requires)))
 
 
-def make_aria_recipe(*, http=False, tls=False, qt=False, jni=False, appkit=False, uikit=False, shared=True):
+def make_aria_recipe(*, http=False, tls=False, qt=False, jni=False, appkit=False, uikit=False,
+                     i18n=False, app=False, shared=True):
     """Select an installed Aria SDK; Qt/NDK/Apple SDK inputs remain explicit."""
     if tls and not http:
         raise ValueError("Aria TLS requires the HTTP feature")
     required = ["json", "mira"] if http else []
     if tls:
         required.append("openssl")
-    return _variant("aria", {"ARIA_BUILD_HTTP": http, "ARIA_HTTP_ENABLE_TLS": tls,
+    settings = {"ARIA_BUILD_HTTP": http, "ARIA_HTTP_ENABLE_TLS": tls,
         "ARIA_BUILD_QT6": qt, "ARIA_BUILD_JNI": jni, "ARIA_BUILD_APPKIT": appkit,
-        "ARIA_BUILD_UIKIT": uikit, "ARIA_BUILD_SHARED": shared}, required)
+        "ARIA_BUILD_UIKIT": uikit, "ARIA_BUILD_SHARED": shared}
+    # Keep recipes for older locked SDKs byte-identical unless a new optional
+    # layer is requested. These layers add no external package dependencies.
+    if i18n:
+        settings["ARIA_BUILD_I18N"] = True
+    if app:
+        settings["ARIA_BUILD_APP"] = True
+    return _variant("aria", settings, required)
 
 
 def make_mira_recipe(*, tls=False, websocket=False, http2=False, http3=False, dnssec=False):

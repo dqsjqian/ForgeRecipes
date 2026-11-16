@@ -36,6 +36,21 @@ class RecipeTests(unittest.TestCase):
         self.assertEqual([dep.name for dep in deps], ['aria', 'json'])
         self.assertEqual(deps[0].requires, ())
 
+    def test_optional_app_layers_do_not_require_network_or_ui_packages(self):
+        for features in ({"i18n": True}, {"app": True},
+                         {"i18n": True, "app": True}):
+            with self.subTest(features=features):
+                recipes = make_sdk_config(**features).recipes
+                self.assertEqual([recipe.name for recipe in recipes], ["aria"])
+                self.assertEqual(recipes[0].requires, ())
+                for feature in features:
+                    self.assertIn(f'-DARIA_BUILD_{feature.upper()}=ON', recipes[0].options)
+        plain = make_sdk_config().recipes[0]
+        disabled = make_sdk_config(i18n=False, app=False).recipes[0]
+        self.assertEqual(plain, disabled)
+        self.assertFalse(any('ARIA_BUILD_I18N' in value or 'ARIA_BUILD_APP=' in value
+                             for value in plain.options))
+
     def test_external_sdk_options_only_change_aria_recipe(self):
         plain = {d.name: d for d in make_sdk_config(http=True, tls=True, qt=True).recipes}
         qt = {d.name: d for d in make_sdk_config(http=True, tls=True, qt=True,

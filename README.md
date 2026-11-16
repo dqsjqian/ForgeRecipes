@@ -40,6 +40,8 @@ artifact dependencies. Recipe builders never silently switch Clang to GCC.
 
 `cmake_dir()/AriaSdk.cmake` exposes `forgerecipes_sdk(FILE lock ...)` for installed
 Aria SDK consumers. Feature values and editable source overrides are explicit.
+The optional `aria::i18n` and `aria::app` components are selected with Python
+`i18n=True, app=True` or CMake `I18N ON APP ON`; they add no external packages.
 Qt libraries and headers are content hashed; the resulting SDK identity affects
 only the Aria recipe, not unrelated libraries in the graph.
 

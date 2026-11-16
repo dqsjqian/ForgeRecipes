@@ -3,7 +3,7 @@ include_guard(GLOBAL)
 include("${CMAKE_CURRENT_LIST_DIR}/PackageLocation.cmake")
 
 function(forgerecipes_sdk)
-    cmake_parse_arguments(SDK "OFFLINE" "FILE;SOURCE;CONFIGURATION;PREFIXES;QT;HTTP;TLS;JNI;APPKIT;UIKIT;SHARED"
+    cmake_parse_arguments(SDK "OFFLINE" "FILE;SOURCE;CONFIGURATION;PREFIXES;QT;HTTP;TLS;JNI;APPKIT;UIKIT;I18N;APP;SHARED"
         "SOURCE_OVERRIDES;EXTRA_PACKAGES" ${ARGN})
     if(NOT SDK_FILE OR SDK_UNPARSED_ARGUMENTS OR SDK_KEYWORDS_MISSING_VALUES)
         message(FATAL_ERROR "forgerecipes_sdk requires FILE and explicit feature values")
@@ -24,7 +24,7 @@ function(forgerecipes_sdk)
     endif()
     include("${_directory}/ForgeDeps.cmake")
     set(_features)
-    foreach(_feature HTTP TLS QT JNI APPKIT UIKIT SHARED)
+    foreach(_feature HTTP TLS QT JNI APPKIT UIKIT I18N APP SHARED)
         string(TOLOWER "${_feature}" _name)
         if(SDK_${_feature})
             list(APPEND _features "${_name}=True")

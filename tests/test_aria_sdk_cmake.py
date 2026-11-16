@@ -18,6 +18,8 @@ function(forgedeps_environment)
         message(FATAL_ERROR "rejected: missing=[${DEP_KEYWORDS_MISSING_VALUES}] unparsed=[${DEP_UNPARSED_ARGUMENTS}]")
     endif()
     message(STATUS "received sources=[${DEP_SOURCE_OVERRIDES}] only=[${DEP_ONLY}]")
+    file(READ "${DEP_PROJECT_CONFIG}" _generated_config)
+    message(STATUS "generated config=[${_generated_config}]")
     set(${DEP_PREFIXES} "" PARENT_SCOPE)
 endfunction()
 """
@@ -56,6 +58,12 @@ class AriaSdkArgumentTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("received sources=[aria=/src/aria] only=[aria,mira]",
                       result.stdout + result.stderr)
+
+    def test_optional_layers_reach_the_recipe_configuration(self):
+        result = self.run_sdk("I18N ON APP ON")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("i18n=True", result.stdout)
+        self.assertIn("app=True", result.stdout)
 
 
 if __name__ == "__main__":
